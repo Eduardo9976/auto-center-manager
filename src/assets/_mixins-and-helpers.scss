@@ -1,0 +1,77 @@
+@function rem($pixel, $context: 16) {
+    @return calc($pixel / $context)+rem;
+}
+
+@mixin font-type-one($size, $color: var(--color-text)) {
+    font-family: var(--font-one);
+    color: $color !important;
+
+    @if $size==14 {
+        font-size: rem(14);
+        line-height: rem(30, 14);
+    }
+
+    @else if $size==16 {
+        font-size: rem(16);
+        line-height: rem(30);
+    }
+
+    @else if $size==18 {
+        font-size: rem(18);
+        line-height: rem(30, 18);
+    }
+
+    @else if $size==24 {
+        font-size: rem(24);
+        line-height: rem(30, 24);
+    }
+
+    @else if $size==28 {
+        font-size: rem(28);
+        line-height: rem(30, 28);
+    }
+}
+
+@mixin font-type-two($size, $color: var(--color-heading)) {
+    font-family: var(--font-one);
+    color: $color !important;
+
+    @if $size==14 {
+        font-size: rem(14);
+        line-height: rem(30, 14);
+    }
+
+    @else if $size==16 {
+        font-size: rem(16);
+        line-height: rem(30);
+    }
+
+    @else if $size==18 {
+        font-size: rem(18);
+        line-height: rem(30, 18);
+    }
+
+    @else if $size==24 {
+        font-size: rem(24);
+        line-height: rem(30, 24);
+    }
+
+    @else if $size==28 {
+        font-size: rem(28);
+        line-height: rem(30, 28);
+    }
+}
+
+@mixin breakpoint($dispositivo) {
+    @if $dispositivo==tablet {
+        @media only screen and (min-width: 601px) and (max-width: 959px) {
+            @content;
+        }
+    }
+
+    @else if $dispositivo==mobile {
+        @media only screen and (max-width: 600px) {
+            @content;
+        }
+    }
+}

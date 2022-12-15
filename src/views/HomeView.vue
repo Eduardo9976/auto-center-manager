@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
+import NewOS from '../components/OS/NewOs.vue'
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <NewOS />
   </main>
 </template>

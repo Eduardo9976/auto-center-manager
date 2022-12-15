@@ -1,0 +1,14 @@
+fieldset {
+    padding: rem(12);
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+legend {
+    @include font-type-two(18);
+    font-weight: bold;
+    margin: 0 rem(12);
+}
+
+.v-input--error {
+    color: var(--vt-c-red);
+}

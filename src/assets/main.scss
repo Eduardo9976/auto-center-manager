@@ -1,10 +1,17 @@
-@import './base.css';
+@import './base.scss';
+@import '_mixins-and-helpers';
 @import './transitions.scss';
+@import './global.scss';
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  background: var(--color-background);
+  color: var(--color-text);
   font-weight: normal;
+  margin: 0 auto;
+  max-width: 1280px;
+  min-height: 100vh;
+  padding: 0 20px;
+  text-rendering: optimizeLegibility;
 }

@@ -1,19 +1,12 @@
-import { reactive, computed } from "vue";
+import { state } from "./state"
+import * as getters from "./getters"
+import * as actions from "./actions"
 import { defineStore } from "pinia";
 
 export const useGlobalStore = defineStore("GLOBAL", () => {
-  // State
-  const state = reactive({
-    viewportWidth: 0,
-  });
-
-  // Getters
-  const getViewportWidth = computed(() => state.viewportWidth);
-
-  // Actions
-  function setViewportWidth(value: number) {
-    state.viewportWidth = value;
-  }
-
-  return { state, getViewportWidth, setViewportWidth };
+  return {
+    state,
+    ...getters,
+    ...actions
+  };
 });

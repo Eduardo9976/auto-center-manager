@@ -1,10 +1,12 @@
 <template>
+  <GlobalAlert />
   <RouterView />
 </template>
 
 <script setup lang="ts">
 import { useGlobalStore } from "@/stores/global";
 import { onMounted, onUnmounted } from "vue";
+import GlobalAlert from "@/components/global/GlobalAlert.vue";
 
 const globalStore = useGlobalStore();
 

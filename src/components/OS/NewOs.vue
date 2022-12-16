@@ -1,27 +1,46 @@
 <template>
   <form class="new-os">
-    <TheFieldset legend="Informações pessoal" class="new-os-fieldset">
-      <PersonalInformations />
+    <TheFieldset class="new-os-fieldset" legend="Informações pessoal">
+      <PersonalInformations
+        v-model:cpf="payloadForm.personalInformations.cpf"
+        v-model:name="payloadForm.personalInformations.name"
+        v-model:phone="payloadForm.personalInformations.phone"
+        v-model:mail="payloadForm.personalInformations.mail"
+        v-model:postalCode="payloadForm.personalInformations.postalCode"
+        v-model:street="payloadForm.personalInformations.street"
+        v-model:number="payloadForm.personalInformations.number"
+        v-model:neigborhood="payloadForm.personalInformations.neigborhood"
+      />
     </TheFieldset>
   </form>
 </template>
+
 <script lang="ts" setup>
-import { defineComponent, defineProps } from "vue";
+import { defineComponent, reactive } from "vue";
 import TheFieldset from "@/components/TheFieldset.vue";
 import PersonalInformations from "./PersonalInformations.vue";
 
 defineComponent({
   name: "NewOS",
   components: {
-    PersonalInformations
+    PersonalInformations,
   },
 });
 
-const props = defineProps({
-  propName: { type: Number as () => number, default: 1 },
+const payloadForm = reactive({
+  personalInformations: {
+    cpf: "",
+    name: "",
+    phone: "",
+    mail: "",
+    postalCode: "",
+    street: "",
+    number: "",
+    neigborhood: "",
+  },
 });
-
 </script>
+
 <style lang="scss" scoped>
 @import "@/assets/mixins-and-helpers";
 .new-os-fieldset {

@@ -11,6 +11,7 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import VueMask from '@devindex/vue-mask';
 
 const app = createApp(App)
 
@@ -22,6 +23,6 @@ const vuetify = createVuetify({
 app.use(vuetify)
 app.use(createPinia())
 app.use(router)
-
+app.use((VueMask as any))
 
 app.mount('#app')

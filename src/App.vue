@@ -1,12 +1,16 @@
 <template>
   <GlobalAlert />
-  <RouterView />
+  <GlobalLoading  v-if="globalStore.getLoading"/>
+  <main>
+    <RouterView />
+  </main>
 </template>
 
 <script setup lang="ts">
 import { useGlobalStore } from "@/stores/global";
 import { onMounted, onUnmounted } from "vue";
 import GlobalAlert from "@/components/global/GlobalAlert.vue";
+import GlobalLoading from "@/components/global/GlobalLoading.vue";
 
 const globalStore = useGlobalStore();
 

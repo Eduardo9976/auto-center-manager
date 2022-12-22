@@ -9,6 +9,7 @@
     type="text"
     variant="outlined"
     color="var(--vt-c-indigo)"
+    v-mask-cpf
   ></v-text-field>
   <v-text-field
     v-model="getName"
@@ -31,6 +32,7 @@
     type="tel"
     variant="outlined"
     color="var(--vt-c-indigo)"
+    v-mask-phone.br
   ></v-text-field>
   <v-text-field
     v-model="getMail"
@@ -46,17 +48,20 @@
   <v-text-field
     v-model="getPostalCode"
     :rules="[(v) => !!v || 'Field is required']"
+    :disabled="globalStore.getLoading"
     id="postalCode"
     class="personal-informations-postalCode"
     label="CEP"
-    placeholder="00000-000"
+    placeholder="00.000-000"
     type="tel"
     variant="outlined"
     color="var(--vt-c-indigo)"
+    v-mask-cep
   ></v-text-field>
   <v-text-field
     v-model="getStreet"
     :rules="[(v) => !!v || 'Field is required']"
+    :disabled="postalCode.length < 10"
     id="street"
     class="personal-informations-street"
     label="Rua"
@@ -68,6 +73,7 @@
   <v-text-field
     v-model="getNeigborhood"
     :rules="[(v) => !!v || 'Field is required']"
+    :disabled="postalCode.length < 10"
     id="neigborhood"
     class="personal-informations-neigborhood"
     label="Bairro"
@@ -79,6 +85,7 @@
   <v-text-field
     v-model="getNumber"
     :rules="[(v) => !!v || 'Field is required']"
+    :disabled="postalCode.length < 10"
     id="number"
     class="personal-informations-number"
     label="Número"
@@ -86,11 +93,13 @@
     type="tel"
     variant="outlined"
     color="var(--vt-c-indigo)"
+    v-mask-number
   ></v-text-field>
 </template>
 
 <script lang="ts" setup>
-import { defineComponent, defineProps, defineEmits, computed } from "vue";
+import { useGlobalStore } from "@/stores/global";
+import { defineComponent, defineProps, defineEmits, computed, watch } from "vue";
 import type { WritableComputedRef } from "vue";
 
 defineComponent({
@@ -142,6 +151,8 @@ const emit = defineEmits([
   "update:number",
   "update:neigborhood",
 ]);
+
+const globalStore = useGlobalStore();
 
 const getCpf: WritableComputedRef<string> = computed({
   get(): string {
@@ -214,6 +225,15 @@ const getNeigborhood: WritableComputedRef<string> = computed({
     emit("update:neigborhood", newValue);
   },
 });
+
+function callCepApi() {
+  globalStore.setLoading()
+  console.log('chamar API');
+}
+
+watch(getPostalCode, (newValue) => {
+  if (newValue.length === 10) callCepApi()
+})
 </script>
 
 <style scoped lang="scss">
@@ -222,11 +242,11 @@ const getNeigborhood: WritableComputedRef<string> = computed({
 .personal-informations {
   &-cpf,
   &-phone {
-    flex: 0 1 150px;
+    flex: 0 1 170px;
   }
   &-name,
   &-mail {
-    flex: 0 1 calc(100% - 150px - rem(12));
+    flex: 0 1 calc(100% - 170px - rem(12));
   }
   &-postalCode,
   &-number {

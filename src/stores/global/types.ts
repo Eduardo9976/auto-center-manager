@@ -7,7 +7,8 @@ export interface Alert {
 
 export interface State {
   viewportWidth: number
-  alert: Alert
+  alert: Alert,
+  loading: boolean
 }
 
 export type RefAlertTimeout = string | number | NodeJS.Timeout | undefined

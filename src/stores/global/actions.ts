@@ -27,3 +27,7 @@ function timeToRemoveAlertOfTheDisplay() {
     state.alert = RESET_ALERT;
   }, state.alert.timeToDisplayInMilliseconds);
 }
+
+export function setLoading(value: boolean = !state.loading) {
+  state.loading = value;
+}

@@ -3,10 +3,10 @@
     v-model="getCpf"
     :rules="[(v) => !!v || 'Field is required']"
     id="cpf"
-    class="cpf"
+    class="personal-informations-cpf"
     label="CPF"
     placeholder="000.000.000-00"
-    type="name"
+    type="text"
     variant="outlined"
     color="var(--vt-c-indigo)"
   ></v-text-field>
@@ -14,10 +14,10 @@
     v-model="getName"
     :rules="[(v) => !!v || 'Field is required']"
     id="name"
-    class="name"
+    class="personal-informations-name"
     label="Nome"
     placeholder="João da Silva"
-    type="name"
+    type="text"
     variant="outlined"
     color="var(--vt-c-indigo)"
   ></v-text-field>
@@ -25,7 +25,7 @@
     v-model="getPhone"
     :rules="[(v) => !!v || 'Field is required']"
     id="phone"
-    class="phone"
+    class="personal-informations-phone"
     label="Telefone"
     placeholder="11 99999-9999"
     type="tel"
@@ -36,7 +36,7 @@
     v-model="getMail"
     :rules="[(v) => !!v || 'Field is required']"
     id="mail"
-    class="mail"
+    class="personal-informations-mail"
     label="Email address"
     placeholder="johndoe@gmail.com"
     type="email"
@@ -47,7 +47,7 @@
     v-model="getPostalCode"
     :rules="[(v) => !!v || 'Field is required']"
     id="postalCode"
-    class="postalCode"
+    class="personal-informations-postalCode"
     label="CEP"
     placeholder="00000-000"
     type="tel"
@@ -58,9 +58,20 @@
     v-model="getStreet"
     :rules="[(v) => !!v || 'Field is required']"
     id="street"
-    class="street"
+    class="personal-informations-street"
     label="Rua"
     placeholder="Rua Pio XX"
+    type="text"
+    variant="outlined"
+    color="var(--vt-c-indigo)"
+  ></v-text-field>
+  <v-text-field
+    v-model="getNeigborhood"
+    :rules="[(v) => !!v || 'Field is required']"
+    id="neigborhood"
+    class="personal-informations-neigborhood"
+    label="Bairro"
+    placeholder="Jardim São Paulo"
     type="text"
     variant="outlined"
     color="var(--vt-c-indigo)"
@@ -69,21 +80,10 @@
     v-model="getNumber"
     :rules="[(v) => !!v || 'Field is required']"
     id="number"
-    class="number"
+    class="personal-informations-number"
     label="Número"
     placeholder="00000-000"
     type="tel"
-    variant="outlined"
-    color="var(--vt-c-indigo)"
-  ></v-text-field>
-  <v-text-field
-    v-model="getNeigborhood"
-    :rules="[(v) => !!v || 'Field is required']"
-    id="neigborhood"
-    class="neigborhood"
-    label="Bairro"
-    placeholder="Jardim São Paulo"
-    type="text"
     variant="outlined"
     color="var(--vt-c-indigo)"
   ></v-text-field>
@@ -100,35 +100,35 @@ defineComponent({
 const props = defineProps({
   cpf: {
     type: String as () => string,
-    default: ""
+    default: "",
   },
   name: {
     type: String as () => string,
-    default: ""
+    default: "",
   },
   phone: {
     type: String as () => string,
-    default: ""
+    default: "",
   },
   mail: {
     type: String as () => string,
-    default: ""
+    default: "",
   },
   postalCode: {
     type: String as () => string,
-    default: ""
+    default: "",
   },
   street: {
     type: String as () => string,
-    default: ""
+    default: "",
   },
   number: {
     type: String as () => string,
-    default: ""
+    default: "",
   },
   neigborhood: {
     type: String as () => string,
-    default: ""
+    default: "",
   },
 });
 
@@ -219,37 +219,34 @@ const getNeigborhood: WritableComputedRef<string> = computed({
 <style scoped lang="scss">
 @import "@/assets/mixins-and-helpers";
 
-.cpf,
-.phone {
-  flex: 0 1 150px;
-}
-.name,
-.mail {
-  flex: 0 1 calc(100% - 150px - rem(12));
-}
-.cep,
-.number {
-  flex: 0 1 130px;
-}
+.personal-informations {
+  &-cpf,
+  &-phone {
+    flex: 0 1 150px;
+  }
+  &-name,
+  &-mail {
+    flex: 0 1 calc(100% - 150px - rem(12));
+  }
+  &-postalCode,
+  &-number {
+    flex: 0 0 130px;
+  }
 
-.street {
-  flex: 0 1 calc(100% - 260px - rem(24));
-}
+  &-street,
+  &-neigborhood {
+    min-width: 200px;
+  }
 
-.neigborhood {
-  flex: 0 1 50%;
-}
-
-@include breakpoint(mobile) {
-  .cpf,
-  .name,
-  .mail,
-  .phone,
-  .cep,
-  .street,
-  .number,
-  .neigborhood {
-    flex: 1 1 100%;
+  @include breakpoint(mobile) {
+    &-cpf,
+    &-name,
+    &-mail,
+    &-phone,
+    &-postalCode,
+    &-number {
+      flex: 1 1 100%;
+    }
   }
 }
 </style>

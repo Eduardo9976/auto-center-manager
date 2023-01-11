@@ -45,19 +45,31 @@
     variant="outlined"
     color="var(--vt-c-indigo)"
   ></v-text-field>
-  <v-text-field
-    v-model="getPostalCode"
-    :rules="[(v) => !!v || 'Field is required']"
-    :disabled="globalStore.getLoading"
-    id="postalCode"
+  <span
+    @keyup.enter.prevent="callCepApi"
     class="personal-informations-postalCode"
-    label="CEP"
-    placeholder="00.000-000"
-    type="tel"
-    variant="outlined"
-    color="var(--vt-c-indigo)"
-    v-mask-cep
-  ></v-text-field>
+  >
+    <v-text-field
+      v-model="getPostalCode"
+      :rules="[(v) => !!v || 'Field is required']"
+      :disabled="globalStore.getLoading"
+      id="postalCode"
+      label="CEP"
+      placeholder="00.000-000"
+      type="tel"
+      variant="outlined"
+      color="var(--vt-c-indigo)"
+      v-mask-cep
+    ></v-text-field>
+    <button
+      :disabled="globalStore.getLoading"
+      @click.prevent="callCepApi"
+      class="personal-informations-postalCode-button"
+      type="button"
+    >
+      <v-icon>mdi-magnify</v-icon>
+    </button>
+  </span>
   <v-text-field
     v-model="getStreet"
     :rules="[(v) => !!v || 'Field is required']"
@@ -99,7 +111,14 @@
 
 <script lang="ts" setup>
 import { useGlobalStore } from "@/stores/global";
-import { defineComponent, defineProps, defineEmits, computed, watch } from "vue";
+import services from "@/services";
+import {
+  defineComponent,
+  defineProps,
+  defineEmits,
+  computed,
+  watch,
+} from "vue";
 import type { WritableComputedRef } from "vue";
 
 defineComponent({
@@ -226,14 +245,31 @@ const getNeigborhood: WritableComputedRef<string> = computed({
   },
 });
 
-function callCepApi() {
-  globalStore.setLoading()
-  console.log('chamar API');
-}
+async function callCepApi() {
+  const CPFLENGTH = 10;
 
-watch(getPostalCode, (newValue) => {
-  if (newValue.length === 10) callCepApi()
-})
+  if (getPostalCode.value.length === CPFLENGTH) {
+    globalStore.setLoading();
+
+    try {
+      const postalCode = getPostalCode.value.replace(/\W/g, "");
+      const response = await services.viaCep.getCep(postalCode);
+
+      if (!response.data) new Error("Cep não encontrado");
+      emit("update:street", response.data.logradouro);
+      emit("update:neigborhood", response.data.bairro);
+    } catch {
+      globalStore.setAlert({
+        type: "warning",
+        message: "Cep não encontrado",
+        active: true,
+        timeToDisplayInMilliseconds: 2000,
+      });
+    } finally {
+      globalStore.setLoading(false);
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -248,7 +284,6 @@ watch(getPostalCode, (newValue) => {
   &-mail {
     flex: 0 1 calc(100% - 170px - rem(12));
   }
-  &-postalCode,
   &-number {
     flex: 0 0 130px;
   }
@@ -256,6 +291,23 @@ watch(getPostalCode, (newValue) => {
   &-street,
   &-neigborhood {
     min-width: 200px;
+  }
+
+  &-postalCode {
+    flex: 0 0 170px;
+    position: relative;
+
+    &-button {
+      height: 72% !important;
+      padding: 0 rem(12);
+      position: absolute;
+      right: 0;
+      top: 0;
+
+      i {
+        opacity: 0.5;
+      }
+    }
   }
 
   @include breakpoint(mobile) {
